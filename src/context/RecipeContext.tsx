@@ -44,11 +44,11 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [savedRecipeIds, setSavedRecipeIds] = useState<string[]>([]);
 
-  // Mock user for now
-  const currentUser = {
-    id: 'user-123',
-    username: 'ChefMaster',
-    profilePicture: 'https://api.dicebear.com/8.x/adventurer/svg?seed=ChefMaster', // Placeholder
+  // Generic user for now
+  const genericUser = {
+    id: 'guest-user',
+    username: 'GuestChef',
+    profilePicture: 'https://api.dicebear.com/8.x/adventurer/svg?seed=GuestChef', // Placeholder
   };
 
   useEffect(() => {
@@ -74,9 +74,9 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
     const newRecipe: Recipe = {
       ...newRecipeData,
       id: `recipe-${Date.now()}`,
-      userId: currentUser.id,
-      username: currentUser.username,
-      profilePicture: currentUser.profilePicture,
+      userId: genericUser.id,
+      username: genericUser.username,
+      profilePicture: genericUser.profilePicture,
       likes: 0,
       comments: [],
     };
@@ -108,8 +108,8 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   const addComment = (recipeId: string, commentText: string) => {
     const newComment: Comment = {
       id: `comment-${Date.now()}`,
-      userId: currentUser.id,
-      username: currentUser.username,
+      userId: genericUser.id,
+      username: genericUser.username,
       text: commentText,
       timestamp: Date.now(),
     };

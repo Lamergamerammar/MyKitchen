@@ -11,8 +11,8 @@ export const NavigationBar = () => {
   const isMobile = useIsMobile();
   const location = useLocation(); // Get current location
 
-  // Hide navigation bar on desktop AND on the landing page
-  if (!isMobile || location.pathname === '/welcome') {
+  // Hide navigation bar only on desktop
+  if (!isMobile) {
     return null;
   }
 

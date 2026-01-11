@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useRecipes } from '@/context/RecipeContext';
-import { useAuth } from '@/context/AuthContext'; // Import useAuth
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { RecipeCard } from '@/components/RecipeCard';
 import { Separator } from '@/components/ui/separator';
@@ -11,13 +10,12 @@ import { LogOut } from 'lucide-react';
 
 const UserProfilePage = () => {
   const { recipes } = useRecipes();
-  const { user, signOut } = useAuth(); // Get user and signOut from AuthContext
 
-  // Use actual user data from Supabase
+  // Generic user for now
   const currentUser = {
-    id: user?.id || '',
-    username: user?.email || 'Guest', // Use email as username for now
-    profilePicture: `https://api.dicebear.com/8.x/adventurer/svg?seed=${user?.email}`, // Generate avatar based on email
+    id: 'guest-user',
+    username: 'GuestChef',
+    profilePicture: `https://api.dicebear.com/8.x/adventurer/svg?seed=GuestChef`, // Generate avatar based on generic name
   };
 
   const userRecipes = recipes.filter(recipe => recipe.userId === currentUser.id);
@@ -30,10 +28,7 @@ const UserProfilePage = () => {
           <AvatarFallback className="text-4xl">{currentUser.username.charAt(0)}</AvatarFallback>
         </Avatar>
         <h1 className="text-4xl font-bold">{currentUser.username}</h1>
-        <p className="text-muted-foreground">{user?.email}</p>
-        <Button variant="outline" className="mt-4" onClick={signOut}>
-          <LogOut className="h-4 w-4 mr-2" /> Logout
-        </Button>
+        <p className="text-muted-foreground">Enjoy exploring and sharing recipes!</p>
       </div>
 
       <Separator className="my-8" />
