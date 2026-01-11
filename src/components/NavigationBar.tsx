@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Import useLocation
 import { Home, Plus, Bookmark, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -9,9 +9,11 @@ import { cn } from '@/lib/utils';
 
 export const NavigationBar = () => {
   const isMobile = useIsMobile();
+  const location = useLocation(); // Get current location
 
-  if (!isMobile) {
-    return null; // Hide navigation bar on desktop
+  // Hide navigation bar on desktop AND on the landing page
+  if (!isMobile || location.pathname === '/welcome') {
+    return null;
   }
 
   const navItems = [
