@@ -11,7 +11,7 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <main className="flex-grow container mx-auto p-4 pb-20"> {/* Added pb-20 for bottom padding */}
+      <main className="flex-grow container mx-auto py-8 px-4 md:px-6 lg:px-8 pb-20"> {/* Adjusted padding */}
         {children}
       </main>
       <NavigationBar />

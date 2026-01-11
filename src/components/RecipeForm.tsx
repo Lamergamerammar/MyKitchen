@@ -55,20 +55,21 @@ export const RecipeForm = () => {
   const recipeTypes: RecipeType[] = ['Sweet', 'Salty', 'Snack', 'Lunch', 'Dinner', 'Breakfast', 'Dessert'];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-4 bg-card rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="space-y-6 p-6 bg-card rounded-xl shadow-lg border border-border"> {/* Enhanced form styling */}
       <div>
-        <Label htmlFor="name">Recipe Name</Label>
+        <Label htmlFor="name" className="text-base">Recipe Name</Label>
         <Input
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Delicious Pasta"
           required
+          className="h-10 text-base"
         />
       </div>
 
       <div>
-        <Label htmlFor="ingredients">Ingredients (one per line)</Label>
+        <Label htmlFor="ingredients" className="text-base">Ingredients (one per line)</Label>
         <Textarea
           id="ingredients"
           value={ingredients}
@@ -76,11 +77,12 @@ export const RecipeForm = () => {
           placeholder="200g pasta&#10;1 can tomatoes&#10;1 onion"
           rows={5}
           required
+          className="text-base"
         />
       </div>
 
       <div>
-        <Label htmlFor="instructions">Instructions (step-by-step)</Label>
+        <Label htmlFor="instructions" className="text-base">Instructions (step-by-step)</Label>
         <Textarea
           id="instructions"
           value={instructions}
@@ -88,28 +90,30 @@ export const RecipeForm = () => {
           placeholder="1. Boil water.&#10;2. Cook pasta.&#10;3. Make sauce."
           rows={7}
           required
+          className="text-base"
         />
       </div>
 
       <div>
-        <Label htmlFor="image">Upload Image</Label>
+        <Label htmlFor="image" className="text-base">Upload Image</Label>
         <Input
           id="image"
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
+          className="h-10 text-base"
         />
         {images.length > 0 && (
           <div className="mt-4">
-            <img src={images[0]} alt="Recipe preview" className="w-32 h-32 object-cover rounded-md" />
+            <img src={images[0]} alt="Recipe preview" className="w-40 h-40 object-cover rounded-lg shadow-md" /> {/* Larger preview */}
           </div>
         )}
       </div>
 
       <div>
-        <Label htmlFor="type">Recipe Type</Label>
+        <Label htmlFor="type" className="text-base">Recipe Type</Label>
         <Select value={type} onValueChange={(value: RecipeType) => setType(value)}>
-          <SelectTrigger id="type">
+          <SelectTrigger id="type" className="h-10 text-base">
             <SelectValue placeholder="Select a type" />
           </SelectTrigger>
           <SelectContent>
@@ -123,17 +127,18 @@ export const RecipeForm = () => {
       </div>
 
       <div>
-        <Label htmlFor="description">Description / Notes (Optional)</Label>
+        <Label htmlFor="description" className="text-base">Description / Notes (Optional)</Label>
         <Textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="A quick and easy weeknight meal."
           rows={3}
+          className="text-base"
         />
       </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button type="submit" className="w-full h-12 text-lg" disabled={loading}> {/* Larger button */}
         {loading ? 'Adding Recipe...' : 'Add Recipe'}
       </Button>
     </form>

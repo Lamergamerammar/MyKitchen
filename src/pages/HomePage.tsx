@@ -18,8 +18,8 @@ const HomePage = () => {
   });
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-center mt-4">Home Cooking Feed</h1>
+    <div className="space-y-8 py-4"> {/* Added vertical padding and increased spacing */}
+      <h1 className="text-4xl font-extrabold text-center mb-6">Home Cooking Feed</h1> {/* Larger, bolder title */}
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -27,9 +27,9 @@ const HomePage = () => {
         setSelectedType={setSelectedType}
       />
       {filteredRecipes.length === 0 ? (
-        <p className="text-center text-muted-foreground mt-8">No recipes found. Be the first to add one!</p>
+        <p className="text-center text-xl text-muted-foreground mt-12">No recipes found. Be the first to add one!</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Increased gap */}
           {filteredRecipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

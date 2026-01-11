@@ -18,8 +18,9 @@ const RecipeDetailPage = () => {
 
   if (!recipe) {
     return (
-      <div className="text-center py-10">
-        <h1 className="text-2xl font-bold mb-4">Recipe Not Found</h1>
+      <div className="text-center py-20">
+        <h1 className="text-3xl font-bold mb-4">Recipe Not Found</h1>
+        <p className="text-lg text-muted-foreground mb-6">The recipe you are looking for does not exist.</p>
         <Button onClick={() => navigate('/')}>Go to Home</Button>
       </div>
     );
@@ -35,81 +36,81 @@ const RecipeDetailPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-lg overflow-hidden">
+    <div className="max-w-3xl mx-auto bg-card rounded-xl shadow-xl overflow-hidden border border-border"> {/* Enhanced card styling */}
       {recipe.images.length > 0 && (
         <img
           src={recipe.images[0]}
           alt={recipe.name}
-          className="w-full h-64 object-cover"
+          className="w-full h-72 object-cover" // Slightly taller image
         />
       )}
-      <div className="p-6">
-        <h1 className="text-4xl font-extrabold mb-2">{recipe.name}</h1>
-        <div className="flex items-center text-sm text-muted-foreground mb-4">
-          <Avatar className="h-6 w-6 mr-2">
+      <div className="p-8"> {/* Increased padding */}
+        <h1 className="text-5xl font-extrabold mb-3 leading-tight">{recipe.name}</h1> {/* Larger, bolder title */}
+        <div className="flex items-center text-base text-muted-foreground mb-6"> {/* Larger text */}
+          <Avatar className="h-7 w-7 mr-2">
             <AvatarImage src={recipe.profilePicture} alt={recipe.username} />
             <AvatarFallback>{recipe.username.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span>By {recipe.username}</span>
-          <span className="mx-2">•</span>
-          <span className="capitalize">{recipe.type}</span>
+          <span>By <span className="font-semibold">{recipe.username}</span></span>
+          <span className="mx-3">•</span>
+          <span className="capitalize font-medium">{recipe.type}</span>
         </div>
 
-        <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">{recipe.description}</p>
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">{recipe.description}</p> {/* Larger description */}
 
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => likeRecipe(recipe.id)} className="flex items-center space-x-1">
-              <Heart className="h-5 w-5" fill={recipe.likes > 0 ? "currentColor" : "none"} />
-              <span>{recipe.likes}</span>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-6"> {/* Increased spacing */}
+            <Button variant="ghost" onClick={() => likeRecipe(recipe.id)} className="flex items-center space-x-2 text-lg"> {/* Larger button text */}
+              <Heart className="h-6 w-6" fill={recipe.likes > 0 ? "currentColor" : "none"} />
+              <span>{recipe.likes} Likes</span>
             </Button>
-            <Button variant="ghost" onClick={() => toggleSaveRecipe(recipe.id)} className="flex items-center space-x-1">
-              <Bookmark className="h-5 w-5" fill={isSaved ? "currentColor" : "none"} />
-              <span>{isSaved ? 'Saved' : 'Save'}</span>
+            <Button variant="ghost" onClick={() => toggleSaveRecipe(recipe.id)} className="flex items-center space-x-2 text-lg">
+              <Bookmark className="h-6 w-6" fill={isSaved ? "currentColor" : "none"} />
+              <span>{isSaved ? 'Saved' : 'Save Recipe'}</span>
             </Button>
           </div>
         </div>
 
-        <Separator className="my-6" />
+        <Separator className="my-8" />
 
-        <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-800 dark:text-gray-200 mb-6">
+        <h2 className="text-3xl font-bold mb-5">Ingredients</h2> {/* Larger heading */}
+        <ul className="list-disc list-inside space-y-3 text-lg text-gray-800 dark:text-gray-200 mb-8"> {/* Increased spacing */}
           {recipe.ingredients.split('\n').map((item, index) => (
             item.trim() && <li key={index}>{item.trim()}</li>
           ))}
         </ul>
 
-        <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-        <ol className="list-decimal list-inside space-y-3 text-lg text-gray-800 dark:text-gray-200 mb-6">
+        <h2 className="text-3xl font-bold mb-5">Instructions</h2> {/* Larger heading */}
+        <ol className="list-decimal list-inside space-y-4 text-lg text-gray-800 dark:text-gray-200 mb-8"> {/* Increased spacing */}
           {recipe.instructions.split('\n').map((step, index) => (
             step.trim() && <li key={index}>{step.trim()}</li>
           ))}
         </ol>
 
-        <Separator className="my-6" />
+        <Separator className="my-8" />
 
-        <h2 className="text-2xl font-bold mb-4">Comments ({recipe.comments.length})</h2>
-        <div className="space-y-4 mb-6">
+        <h2 className="text-3xl font-bold mb-5">Comments ({recipe.comments.length})</h2> {/* Larger heading */}
+        <div className="space-y-6 mb-8"> {/* Increased spacing */}
           {recipe.comments.length === 0 ? (
-            <p className="text-muted-foreground">No comments yet. Be the first to comment!</p>
+            <p className="text-muted-foreground text-lg">No comments yet. Be the first to comment!</p>
           ) : (
             recipe.comments.map((comment) => (
-              <div key={comment.id} className="flex items-start space-x-3">
-                <Avatar className="h-8 w-8">
+              <div key={comment.id} className="flex items-start space-x-4 p-4 bg-muted/30 rounded-lg"> {/* Styled comment */}
+                <Avatar className="h-9 w-9">
                   <AvatarImage src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${comment.username}`} alt={comment.username} />
                   <AvatarFallback>{comment.username.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold text-sm">{comment.username}</p>
-                  <p className="text-gray-700 dark:text-gray-300 text-base">{comment.text}</p>
-                  <p className="text-xs text-muted-foreground">{new Date(comment.timestamp).toLocaleString()}</p>
+                  <p className="font-semibold text-base">{comment.username}</p>
+                  <p className="text-gray-700 dark:text-gray-300 text-lg mt-1">{comment.text}</p>
+                  <p className="text-xs text-muted-foreground mt-2">{new Date(comment.timestamp).toLocaleString()}</p>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-3"> {/* Increased spacing */}
           <Input
             placeholder="Add a comment..."
             value={commentText}
@@ -119,9 +120,10 @@ const RecipeDetailPage = () => {
                 handleAddComment();
               }
             }}
+            className="h-12 text-base"
           />
-          <Button onClick={handleAddComment}>
-            <MessageCircle className="h-4 w-4 mr-2" /> Comment
+          <Button onClick={handleAddComment} className="h-12 px-6 text-base">
+            <MessageCircle className="h-5 w-5 mr-2" /> Comment
           </Button>
         </div>
       </div>

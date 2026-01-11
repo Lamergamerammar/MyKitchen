@@ -28,9 +28,16 @@ export interface Comment {
   timestamp: number;
 }
 
+interface GuestUser {
+  id: string;
+  username: string;
+  profilePicture: string;
+}
+
 interface RecipeContextType {
   recipes: Recipe[];
   savedRecipeIds: string[];
+  guestUser: GuestUser; // Expose guest user
   addRecipe: (recipe: Omit<Recipe, 'id' | 'userId' | 'username' | 'profilePicture' | 'likes' | 'comments'>) => void;
   toggleSaveRecipe: (recipeId: string) => void;
   likeRecipe: (recipeId: string) => void;
@@ -40,16 +47,41 @@ interface RecipeContextType {
 
 const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
 
+// Function to generate a random guest username and avatar
+const generateGuestUser = (): GuestUser => {
+  const adjectives = ['Happy', 'Clever', 'Hungry', 'Creative', 'Spicy', 'Sweet', 'Savvy', 'Quick'];
+  const nouns = ['Chef', 'Cook', 'Baker', 'Gourmet', 'Foodie', 'Creator', 'Maestro'];
+  const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  const randomNumber = Math.floor(Math.random() * 1000);
+  const username = `${randomAdjective}${randomNoun}${randomNumber}`;
+  const profilePicture = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}`;
+  return { id: `guest-${username}`, username, profilePicture };
+};
+
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [savedRecipeIds, setSavedRecipeIds] = useState<string[]>([]);
+  const [guestUser, setGuestUser] = useState<GuestUser>(() => {
+    // Initialize guest user from localStorage or generate new
+    const storedGuestUserId = localStorage.getItem('guestUserId');
+    const storedGuestUsername = localStorage.getItem('guestUsername');
+    const storedGuestProfilePicture = localStorage.getItem('guestProfilePicture');
 
-  // Generic user for now
-  const genericUser = {
-    id: 'guest-user',
-    username: 'GuestChef',
-    profilePicture: 'https://api.dicebear.com/8.x/adventurer/svg?seed=GuestChef', // Placeholder
-  };
+    if (storedGuestUserId && storedGuestUsername && storedGuestProfilePicture) {
+      return {
+        id: storedGuestUserId,
+        username: storedGuestUsername,
+        profilePicture: storedGuestProfilePicture,
+      };
+    } else {
+      const newGuestUser = generateGuestUser();
+      localStorage.setItem('guestUserId', newGuestUser.id);
+      localStorage.setItem('guestUsername', newGuestUser.username);
+      localStorage.setItem('guestProfilePicture', newGuestUser.profilePicture);
+      return newGuestUser;
+    }
+  });
 
   useEffect(() => {
     const storedRecipes = localStorage.getItem('recipes');
@@ -74,9 +106,9 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
     const newRecipe: Recipe = {
       ...newRecipeData,
       id: `recipe-${Date.now()}`,
-      userId: genericUser.id,
-      username: genericUser.username,
-      profilePicture: genericUser.profilePicture,
+      userId: guestUser.id, // Use dynamic guest user
+      username: guestUser.username, // Use dynamic guest user
+      profilePicture: guestUser.profilePicture, // Use dynamic guest user
       likes: 0,
       comments: [],
     };
@@ -108,8 +140,8 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   const addComment = (recipeId: string, commentText: string) => {
     const newComment: Comment = {
       id: `comment-${Date.now()}`,
-      userId: genericUser.id,
-      username: genericUser.username,
+      userId: guestUser.id, // Use dynamic guest user
+      username: guestUser.username, // Use dynamic guest user
       text: commentText,
       timestamp: Date.now(),
     };
@@ -130,6 +162,7 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
       value={{
         recipes,
         savedRecipeIds,
+        guestUser, // Provide guestUser in context
         addRecipe,
         toggleSaveRecipe,
         likeRecipe,
